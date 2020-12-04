@@ -10,9 +10,11 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 
 const Tasks = (props) => {
+  const { task, style } = props;
+  console.log(1.1, props);
   return (
     <ListItem
-      key={props.id}
+      key={task._id}
       role={undefined}
       dense
       button
@@ -25,14 +27,10 @@ const Tasks = (props) => {
           // checked={checked.indexOf(value) !== -1}
           // tabIndex={-1}
           disableRipple
-          inputProps={{ "aria-labelledby": props.id }}
+          inputProps={{ "aria-labelledby": task._id }}
         />
       </ListItemIcon>
-      <ListItemText
-        id={props.id}
-        primary={`Line item ${props.id + 1}`}
-        css={props.style}
-      />
+      <ListItemText id={task._id} primary={task.name} css={style} />
       {/* <ListItemSecondaryAction> */}
       <IconButton edge="end" aria-label="delete">
         <DeleteIcon />

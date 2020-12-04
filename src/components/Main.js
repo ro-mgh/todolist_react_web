@@ -77,7 +77,7 @@ const Main = (props) => {
 
   const tasksDB = mockDB;
   const [task, setTask] = useState("");
-  const [tasks, setTasks] = useState(tasksDB);
+  const [tasks, setTasks] = useState(tasksDB || []);
 
   const handleClickAddNewTask = (e) => {
     e.preventDefault();
@@ -116,17 +116,27 @@ const Main = (props) => {
       <Grid item xs={7}>
         <Paper className={classes.paper_tasks}>
           <Typography className={classes.headers}>Current tasks</Typography>
-          <Tasks id={1} />
+          {tasks
+            .filter((t) => t.status === "active")
+            .map((t) => {
+              return <Tasks task={t} />;
+            })}
         </Paper>
       </Grid>
       <Grid item xs={4}>
         <Paper className={classes.paper_tasks}>
           <Typography className={classes.headers}>Completed tasks</Typography>
-          <Tasks id={2} style={text_decoration} />
+          {tasks
+            .filter((t) => t.status === "complete")
+            .map((t) => {
+              return <Tasks task={t} style={"text_decoration": "line-through"} />;
+            })}
         </Paper>
       </Grid>
     </Grid>
   );
 };
+
+// {...ele,oldArr}
 
 export default Main;
