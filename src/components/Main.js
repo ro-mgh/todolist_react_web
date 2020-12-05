@@ -9,6 +9,7 @@ import { text_decoration } from "./Styles";
 import Typography from "@material-ui/core/Typography";
 import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
 import AddingTask from "./AddingTask";
+import List from "@material-ui/core/List";
 
 const useToDoListStyles = makeStyles((theme) => ({
   container: {
@@ -42,9 +43,9 @@ const useToDoListStyles = makeStyles((theme) => ({
   },
 }));
 
-const mockDB = [
+let mockDB = [
   {
-    _id: "5fb1788413e5a31d8a9c45b2",
+    _id: "5fb1788413e5a31d8a9c45b1",
     status: "active",
     name: "test1A",
     createdBy: "5fb1787713e5a31d8a9c45b1",
@@ -62,7 +63,7 @@ const mockDB = [
     __v: "0",
   },
   {
-    _id: "5fb1788413e5a31d8a9c45b2",
+    _id: "5fb1788413e5a31d8a9c45b3",
     status: "active",
     name: "test3A",
     createdBy: "5fb1787713e5a31d8a9c45b1",
@@ -74,24 +75,45 @@ const mockDB = [
 
 const Main = (props) => {
   const classes = useToDoListStyles();
-
   const tasksDB = mockDB;
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState(tasksDB || []);
+  const [id, setID] = useState(1);
 
   const handleClickAddNewTask = (e) => {
     e.preventDefault();
     if (task !== "") {
-      setTasks(
-        tasks.push({
-          name: task,
-          status: "active",
-          _id: `task ${1}`,
-        })
-      );
+      let newEle = {
+        name: task,
+        status: "active",
+        _id: id,
+      };
+      setTasks([newEle, ...tasks]);
       setTask("");
+      setID(id + 1);
       console.log(tasks, task);
     }
+  };
+
+  const handleCheckbox = (id) => {
+    const newTasks = tasks.map((t) => {
+      if (t._id === id) {
+        if (t.status === "active") {
+          return { ...t, status: "complete" };
+        } else {
+          return { ...t, status: "active" };
+        }
+      } else {
+        return t;
+      }
+    });
+
+    setTasks(newTasks);
+  };
+
+  const handleDelete = (id) => {
+    const newTasks = tasks.filter((t) => t._id !== id);
+    setTasks(newTasks);
   };
 
   /// Use Effect to update list of
@@ -111,26 +133,45 @@ const Main = (props) => {
       </Grid>
       <Grid item xs={4} className={classes.grid_counter}>
         <CheckCircleRoundedIcon className={classes.counter_icon} />
-        <Typography className={classes.headers}>2</Typography>
+        <Typography className={classes.headers}>
+          {tasks.filter((t) => t.status === "complete").length}
+        </Typography>
       </Grid>
       <Grid item xs={7}>
         <Paper className={classes.paper_tasks}>
           <Typography className={classes.headers}>Current tasks</Typography>
-          {tasks
-            .filter((t) => t.status === "active")
-            .map((t) => {
-              return <Tasks task={t} />;
-            })}
+          <List>
+            {tasks
+              .filter((t) => t.status === "active")
+              .map((t) => {
+                return (
+                  <Tasks
+                    task={t}
+                    onComplete={handleCheckbox}
+                    onDelete={handleDelete}
+                  />
+                );
+              })}
+          </List>
         </Paper>
       </Grid>
       <Grid item xs={4}>
         <Paper className={classes.paper_tasks}>
           <Typography className={classes.headers}>Completed tasks</Typography>
-          {tasks
-            .filter((t) => t.status === "complete")
-            .map((t) => {
-              return <Tasks task={t} style={"text_decoration": "line-through"} />;
-            })}
+          <List>
+            {tasks
+              .filter((t) => t.status === "complete")
+              .map((t) => {
+                return (
+                  <Tasks
+                    task={t}
+                    style={text_decoration}
+                    onComplete={handleCheckbox}
+                    onDelete={handleDelete}
+                  />
+                );
+              })}
+          </List>
         </Paper>
       </Grid>
     </Grid>
@@ -138,5 +179,11 @@ const Main = (props) => {
 };
 
 // {...ele,oldArr}
+
+// const newProjects = projects.map(p =>
+//   p.value === 'jquery-ui'
+//     ? { ...p, desc: 'new description' }
+//     : p
+// );
 
 export default Main;

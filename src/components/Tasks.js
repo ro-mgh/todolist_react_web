@@ -10,32 +10,43 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 
 const Tasks = (props) => {
-  const { task, style } = props;
-  console.log(1.1, props);
+  const { task, style, onComplete, onDelete } = props;
+
+  // console.log(1.1, props);
+
+  const handleToggle = (e) => {
+    e.preventDefault();
+    onComplete(task._id);
+  };
+
+  const handleDeleteBtn = (e) => {
+    e.preventDefault();
+    onDelete(task._id);
+  };
+
   return (
     <ListItem
       key={task._id}
-      role={undefined}
-      dense
+      // role={undefined}
+      // dense
       button
       alignItems="center"
-      // onClick={handleToggle(value)}
+      onClick={handleToggle}
     >
       <ListItemIcon>
         <Checkbox
           edge="start"
-          // checked={checked.indexOf(value) !== -1}
-          // tabIndex={-1}
-          disableRipple
+          checked={task.status === "complete"}
+          // disableRipple
           inputProps={{ "aria-labelledby": task._id }}
         />
       </ListItemIcon>
       <ListItemText id={task._id} primary={task.name} css={style} />
-      {/* <ListItemSecondaryAction> */}
-      <IconButton edge="end" aria-label="delete">
-        <DeleteIcon />
-      </IconButton>
-      {/* </ListItemSecondaryAction> */}
+      <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="delete" onClick={handleDeleteBtn}>
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
     </ListItem>
   );
 };
