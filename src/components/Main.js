@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Tasks from "./Tasks";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-/** @jsx jsx */
-import { jsx } from "@emotion/react";
 import { text_decoration } from "./Styles";
 import Typography from "@material-ui/core/Typography";
 import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
 import AddingTask from "./AddingTask";
 import List from "@material-ui/core/List";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useToDoListStyles = makeStyles((theme) => ({
   container: {
@@ -91,7 +89,6 @@ const Main = (props) => {
       setTasks([newEle, ...tasks]);
       setTask("");
       setID(id + 1);
-      console.log(tasks, task);
     }
   };
 
