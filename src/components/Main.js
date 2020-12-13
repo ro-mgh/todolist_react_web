@@ -179,26 +179,28 @@ const Main = (props) => {
     const newTasks = tasks.filter((t) => t._id !== id);
     setTasks(newTasks);
 
-    try {
-      const response = await fetch(
-        "https://todolist-server-ro-mgh.herokuapp.com/item/" + id,
-        {
-          method: "delete",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: localStorage.getItem("token"),
-          },
-          body: JSON.stringify({
-            id: id,
-          }),
+    if (user) {
+      try {
+        const response = await fetch(
+          "https://todolist-server-ro-mgh.herokuapp.com/item/" + id,
+          {
+            method: "delete",
+            headers: {
+              "Content-type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            },
+            body: JSON.stringify({
+              id: id,
+            }),
+          }
+        );
+        const serverResponse = await response.json();
+        if (serverResponse.emessage) {
+          setErr(serverResponse.emessage);
         }
-      );
-      const serverResponse = await response.json();
-      if (serverResponse.emessage) {
-        setErr(serverResponse.emessage);
+      } catch (e) {
+        setErr("Error occured while task deletion");
       }
-    } catch (e) {
-      setErr("Error occured while task deletion");
     }
   };
 
