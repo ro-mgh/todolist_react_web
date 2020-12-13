@@ -65,16 +65,19 @@ export default function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/signin", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
+      const response = await fetch(
+        "https://todolist-server-ro-mgh.herokuapp.com/signin",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        }
+      );
       const serverResponse = await response.json();
       if (!serverResponse.emessage) {
         if (response.statusText !== "Bad Request") {

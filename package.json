@@ -1,7 +1,7 @@
 {
   "name": "todolist",
   "version": "1.0.0",
-  "description": "",
+  "description": "web_interface",
   "main": "index.js",
   "scripts": {
     "clear-build-cache": "rm -rf .cache/ dist/",
@@ -12,7 +12,7 @@
     "dev:mock": "cross-env PET_MOCK=mock npm run dev"
   },
   "keywords": [],
-  "author": "",
+  "author": "Roman Myagchenkov",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.12.3",

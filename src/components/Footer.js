@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer css={footer_style}>
       <p>
-        <a href="https://github.com/ro-mgh/todolist_project" target="_blank">
+        <a href="https://github.com/ro-mgh/todolist_react_web" target="_blank">
           <img css={footer__img} src={Logo} alt="Git"></img>
         </a>
       </p>

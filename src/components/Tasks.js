@@ -12,8 +12,6 @@ import IconButton from "@material-ui/core/IconButton";
 const Tasks = (props) => {
   const { task, style, onComplete, onDelete } = props;
 
-  // console.log(1.1, props);
-
   const handleToggle = (e) => {
     e.preventDefault();
     onComplete(task._id);

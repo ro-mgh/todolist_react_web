@@ -23,36 +23,6 @@ const useAddingTask = makeStyles((theme) => ({
   },
 }));
 
-const mockDB = [
-  {
-    _id: "5fb1788413e5a31d8a9c45b2",
-    status: "active",
-    name: "test1A",
-    createdBy: "5fb1787713e5a31d8a9c45b1",
-    createdAt: "2020-11-15T18:50:44.198+00:00",
-    updatedAt: "2020-11-15T18:50:44.198+00:00",
-    __v: "0",
-  },
-  {
-    _id: "5fb1788413e5a31d8a9c45b2",
-    status: "complete",
-    name: "test2C",
-    createdBy: "5fb1787713e5a31d8a9c45b1",
-    createdAt: "2020-11-15T18:50:44.198+00:00",
-    updatedAt: "2020-11-15T18:50:44.198+00:00",
-    __v: "0",
-  },
-  {
-    _id: "5fb1788413e5a31d8a9c45b2",
-    status: "active",
-    name: "test3A",
-    createdBy: "5fb1787713e5a31d8a9c45b1",
-    createdAt: "2020-11-15T18:50:44.198+00:00",
-    updatedAt: "2020-11-15T18:50:44.198+00:00",
-    __v: "0",
-  },
-];
-
 const AddingTask = (props) => {
   const classes = useAddingTask();
 

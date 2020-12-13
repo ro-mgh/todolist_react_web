@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Navigation from "../components/Navigation";
+import React from "react";
 import Main from "../components/Main";
 
 const Todolist = () => {

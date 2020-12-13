@@ -3,8 +3,6 @@ import { render } from "react-dom";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Footer from "./components/Footer";
 import Todolist from "./views/Todolist";
-import SignIn from "./views/Signin";
-import SignUp from "./views/Signup";
 import Navigation from "./components/Navigation";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import UserContext from "./components/UserContext";
@@ -35,7 +33,6 @@ const App = () => {
     <UserContext.Provider value={user}>
       <Router>
         <ThemeProvider theme={theme}>
-          {/* to make custom routes (protected)  (screenshots) */}
           <Navigation />
           <Switch>
             <Route exact path="/todolist">
@@ -43,12 +40,6 @@ const App = () => {
             </Route>
             <ProtectedSignin path="/signin" />
             <ProtectedSignup path="/signup" />
-            {/* <Route path="/signin">
-              <SignIn />
-            </Route> */}
-            {/* <Route path="/signup">
-              <SignUp />
-            </Route> */}
           </Switch>
           <Footer />
         </ThemeProvider>

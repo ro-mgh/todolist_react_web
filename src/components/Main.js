@@ -36,7 +36,6 @@ const useToDoListStyles = makeStyles((theme) => ({
     "justify-content": "center",
   },
   counter_icon: {
-    "margin-top": "10px",
     width: "70px",
     height: "70px",
     color: theme.fontColor,
@@ -49,27 +48,26 @@ const useToDoListStyles = makeStyles((theme) => ({
 const Main = (props) => {
   const classes = useToDoListStyles();
 
-  // fetch
-
-  // const tasksDB = mockDB;
   const [user, setUser] = useContext(UserContext);
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
   const [id, setID] = useState(1);
   const [err, setErr] = useState("");
 
+  // fetch and adds tasks from user to main page
   useEffect(() => {
     async function fetchTasks() {
       if (user) {
         setTasks([]);
 
-        const response = await fetch("http://localhost:5000/mytodolist", {
-          method: "GET",
-          headers: { Authorization: localStorage.getItem("token") },
-          // body: {
-          //   user: user,
-          // },
-        });
+        const response = await fetch(
+          "https://todolist-server-ro-mgh.herokuapp.com/mytodolist",
+          {
+            method: "GET",
+            headers: { Authorization: localStorage.getItem("token") },
+            //  protect middlware add user out of toket
+          }
+        );
         const serverResponse = await response.json();
         console.log("main resp", serverResponse);
         if (!serverResponse.emessage) {
@@ -84,6 +82,7 @@ const Main = (props) => {
     fetchTasks();
   }, [user]);
 
+  // adding new task
   const handleClickAddNewTask = async (e) => {
     e.preventDefault();
     if (task !== "") {
@@ -96,7 +95,7 @@ const Main = (props) => {
       if (user) {
         try {
           const response = await fetch(
-            "http://localhost:5000/mytodolist/item",
+            "https://todolist-server-ro-mgh.herokuapp.com/item",
             {
               method: "post",
               headers: {
@@ -109,19 +108,14 @@ const Main = (props) => {
             }
           );
           if (response.ok) {
-            // console.log("R", response);
             const jsonResponse = await response.json();
             const taskFromDB = await jsonResponse.task;
-            // console.log("taskFromDB", taskFromDB);
             newTask = taskFromDB;
           } else {
-            // console.log("U", user);
-            // console.log("Token", localStorage.getItem("token"));
-            // console.log("R", response);
-            // console.log("i am here");
             setErr("Error occured while adding task");
           }
         } catch (e) {
+          console.error(e);
           setErr("Error occured while adding task");
         }
       }
@@ -131,6 +125,7 @@ const Main = (props) => {
     }
   };
 
+  // changing of status when click checked
   const handleCheckbox = async (id) => {
     let newStatus = "";
 
@@ -153,7 +148,7 @@ const Main = (props) => {
     if (newStatus && user) {
       try {
         const response = await fetch(
-          "http://localhost:5000/mytodolist/item/" + id,
+          "https://todolist-server-ro-mgh.herokuapp.com/item/" + id,
           {
             method: "put",
             headers: {
@@ -173,18 +168,20 @@ const Main = (props) => {
           setErr(serverResponse.emessage);
         }
       } catch (e) {
+        console.error(e);
         setErr("Error occured on task status change");
       }
     }
   };
 
+  // delete task from db and main
   const handleDelete = async (id) => {
     const newTasks = tasks.filter((t) => t._id !== id);
     setTasks(newTasks);
 
     try {
       const response = await fetch(
-        "http://localhost:5000/mytodolist/item/" + id,
+        "https://todolist-server-ro-mgh.herokuapp.com/item/" + id,
         {
           method: "delete",
           headers: {

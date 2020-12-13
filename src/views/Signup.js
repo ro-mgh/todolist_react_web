@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,19 +64,21 @@ export default function SignUp() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:5000/signup", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password,
-        }),
-      });
+      const response = await fetch(
+        "https://todolist-server-ro-mgh.herokuapp.com/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            password: password,
+          }),
+        }
+      );
       const serverResponse = await response.json();
       if (!response.emessage) {
         if (response.statusText !== "Bad Request") {

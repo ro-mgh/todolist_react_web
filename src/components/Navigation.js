@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
-// import { useNavigationStyles } from "./Styles";
 import { makeStyles } from "@material-ui/core/styles";
 import UserContext from "../components/UserContext";
 
