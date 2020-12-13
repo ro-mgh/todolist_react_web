@@ -91,7 +91,8 @@ export default function SignIn() {
         setErr(serverResponse.emessage);
       }
     } catch (e) {
-      setErr(e);
+      console.error(e);
+      setErr("Error connecting to server");
     }
   };
 

@@ -92,7 +92,8 @@ export default function SignUp() {
         setErr(serverResponse.emessage);
       }
     } catch (e) {
-      setErr(e);
+      console.error(e);
+      setErr("Error connecting to server");
     }
   };
 
