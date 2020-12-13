@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clear-build-cache": "rm -rf .cache/ dist/",
-    "dev": "parcel src/index.html",
+    "dev": "parcel build src/index.html",
     "lint": "eslint \"src/**/*.{js, jsx}\" --quiet",
     "format": "prettier \"src/**/*.{js, html}\" --write",
     "test": "echo \"Error: no test specified\" && exit 1",
