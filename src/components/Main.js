@@ -95,7 +95,7 @@ const Main = (props) => {
       if (user) {
         try {
           const response = await fetch(
-            "https://todolist-server-ro-mgh.herokuapp.com/item",
+            "https://todolist-server-ro-mgh.herokuapp.com/mytodolist/item",
             {
               method: "post",
               headers: {
@@ -148,7 +148,7 @@ const Main = (props) => {
     if (newStatus && user) {
       try {
         const response = await fetch(
-          "https://todolist-server-ro-mgh.herokuapp.com/item/" + id,
+          "https://todolist-server-ro-mgh.herokuapp.com/mytodolist/item/" + id,
           {
             method: "put",
             headers: {
@@ -182,7 +182,7 @@ const Main = (props) => {
     if (user) {
       try {
         const response = await fetch(
-          "https://todolist-server-ro-mgh.herokuapp.com/item/" + id,
+          "https://todolist-server-ro-mgh.herokuapp.com/mytodolist/item/" + id,
           {
             method: "delete",
             headers: {
