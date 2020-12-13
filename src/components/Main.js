@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Tasks from "./Tasks";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import Alert from "@material-ui/lab/Alert";
 import { text_decoration } from "./Styles";
 import Typography from "@material-ui/core/Typography";
 import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
 import AddingTask from "./AddingTask";
 import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core/styles";
+import UserContext from "../components/UserContext";
 
 const useToDoListStyles = makeStyles((theme) => ({
   container: {
@@ -39,65 +41,106 @@ const useToDoListStyles = makeStyles((theme) => ({
     height: "70px",
     color: theme.fontColor,
   },
+  error: {
+    width: "93%",
+  },
 }));
-
-let mockDB = [
-  {
-    _id: "5fb1788413e5a31d8a9c45b1",
-    status: "active",
-    name: "test1A",
-    createdBy: "5fb1787713e5a31d8a9c45b1",
-    createdAt: "2020-11-15T18:50:44.198+00:00",
-    updatedAt: "2020-11-15T18:50:44.198+00:00",
-    __v: "0",
-  },
-  {
-    _id: "5fb1788413e5a31d8a9c45b2",
-    status: "complete",
-    name: "test2C",
-    createdBy: "5fb1787713e5a31d8a9c45b1",
-    createdAt: "2020-11-15T18:50:44.198+00:00",
-    updatedAt: "2020-11-15T18:50:44.198+00:00",
-    __v: "0",
-  },
-  {
-    _id: "5fb1788413e5a31d8a9c45b3",
-    status: "active",
-    name: "test3A",
-    createdBy: "5fb1787713e5a31d8a9c45b1",
-    createdAt: "2020-11-15T18:50:44.198+00:00",
-    updatedAt: "2020-11-15T18:50:44.198+00:00",
-    __v: "0",
-  },
-];
 
 const Main = (props) => {
   const classes = useToDoListStyles();
-  const tasksDB = mockDB;
-  const [task, setTask] = useState("");
-  const [tasks, setTasks] = useState(tasksDB || []);
-  const [id, setID] = useState(1);
 
-  const handleClickAddNewTask = (e) => {
+  // fetch
+
+  // const tasksDB = mockDB;
+  const [user, setUser] = useContext(UserContext);
+  const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [id, setID] = useState(1);
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    async function fetchTasks() {
+      if (user) {
+        setTasks([]);
+
+        const response = await fetch("http://localhost:5000/mytodolist", {
+          method: "GET",
+          headers: { Authorization: localStorage.getItem("token") },
+          // body: {
+          //   user: user,
+          // },
+        });
+        const serverResponse = await response.json();
+        console.log("main resp", serverResponse);
+        if (!serverResponse.emessage) {
+          setTasks(serverResponse.tasks);
+        } else {
+          setErr(serverResponse.emessage);
+        }
+      } else {
+        setTasks([]);
+      }
+    }
+    fetchTasks();
+  }, [user]);
+
+  const handleClickAddNewTask = async (e) => {
     e.preventDefault();
     if (task !== "") {
-      let newEle = {
+      let newTask = {
         name: task,
         status: "active",
         _id: id,
       };
-      setTasks([newEle, ...tasks]);
+
+      if (user) {
+        try {
+          const response = await fetch(
+            "http://localhost:5000/mytodolist/item",
+            {
+              method: "post",
+              headers: {
+                "Content-type": "application/json",
+                Authorization: localStorage.getItem("token"),
+              },
+              body: JSON.stringify({
+                name: newTask.name,
+              }),
+            }
+          );
+          if (response.ok) {
+            // console.log("R", response);
+            const jsonResponse = await response.json();
+            const taskFromDB = await jsonResponse.task;
+            // console.log("taskFromDB", taskFromDB);
+            newTask = taskFromDB;
+          } else {
+            // console.log("U", user);
+            // console.log("Token", localStorage.getItem("token"));
+            // console.log("R", response);
+            // console.log("i am here");
+            setErr("Error occured while adding task");
+          }
+        } catch (e) {
+          setErr("Error occured while adding task");
+        }
+      }
+      setTasks([newTask, ...tasks]);
       setTask("");
       setID(id + 1);
     }
   };
 
-  const handleCheckbox = (id) => {
+  const handleCheckbox = async (id) => {
+    let newStatus = "";
+
     const newTasks = tasks.map((t) => {
       if (t._id === id) {
         if (t.status === "active") {
+          newStatus = "complete";
           return { ...t, status: "complete" };
         } else {
+          newStatus = "active";
           return { ...t, status: "active" };
         }
       } else {
@@ -106,21 +149,72 @@ const Main = (props) => {
     });
 
     setTasks(newTasks);
+
+    if (newStatus && user) {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/mytodolist/item/" + id,
+          {
+            method: "put",
+            headers: {
+              "Content-type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            },
+            body: JSON.stringify({
+              id: id,
+              toChange: {
+                status: newStatus,
+              },
+            }),
+          }
+        );
+        const serverResponse = await response.json();
+        if (serverResponse.emessage) {
+          setErr(serverResponse.emessage);
+        }
+      } catch (e) {
+        setErr("Error occured on task status change");
+      }
+    }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const newTasks = tasks.filter((t) => t._id !== id);
     setTasks(newTasks);
-  };
 
-  /// Use Effect to update list of
+    try {
+      const response = await fetch(
+        "http://localhost:5000/mytodolist/item/" + id,
+        {
+          method: "delete",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            id: id,
+          }),
+        }
+      );
+      const serverResponse = await response.json();
+      if (serverResponse.emessage) {
+        setErr(serverResponse.emessage);
+      }
+    } catch (e) {
+      setErr("Error occured while task deletion");
+    }
+  };
 
   return (
     <Grid container spacing={3} justify="center" className={classes.container}>
       <Grid item xs={7}>
         <Paper className={classes.paper_adding}>
           <Typography className={classes.headers}>Add new task</Typography>
-          {/* <div> {task}</div> */}
+          {err ? (
+            <Alert severity="error" className={classes.error}>
+              {err}
+            </Alert>
+          ) : null}
           <AddingTask
             task={task}
             onAddTask={handleClickAddNewTask}
@@ -174,13 +268,5 @@ const Main = (props) => {
     </Grid>
   );
 };
-
-// {...ele,oldArr}
-
-// const newProjects = projects.map(p =>
-//   p.value === 'jquery-ui'
-//     ? { ...p, desc: 'new description' }
-//     : p
-// );
 
 export default Main;

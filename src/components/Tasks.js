@@ -25,19 +25,11 @@ const Tasks = (props) => {
   };
 
   return (
-    <ListItem
-      key={task._id}
-      // role={undefined}
-      // dense
-      button
-      alignItems="center"
-      onClick={handleToggle}
-    >
+    <ListItem key={task._id} button alignItems="center" onClick={handleToggle}>
       <ListItemIcon>
         <Checkbox
           edge="start"
           checked={task.status === "complete"}
-          // disableRipple
           inputProps={{ "aria-labelledby": task._id }}
         />
       </ListItemIcon>

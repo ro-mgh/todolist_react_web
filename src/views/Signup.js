@@ -3,12 +3,14 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
+import ULink from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
+import Alert from "@material-ui/lab/Alert";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { Link, Redirect } from "react-router-dom";
 import UserContext from "../components/UserContext";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     padding: "0 30px",
   },
+  error: {
+    width: "100%",
+    "margin-top": theme.spacing(3),
+  },
 }));
 
 export default function SignUp() {
@@ -51,7 +57,9 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [user, setUser] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
+  const [redirect, setRedirect] = useState(false);
+  const [err, setErr] = useState("");
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -68,18 +76,29 @@ export default function SignUp() {
           password: password,
         }),
       });
-      // if (response.ok) {
       const serverResponse = await response.json();
       if (!response.emessage) {
-        console.log("Signup", serverResponse);
-        console.log("Signup", serverResponse.body);
-        // setUser(serverResponse.body);
+        if (response.statusText !== "Bad Request") {
+          window.localStorage.setItem(
+            "token",
+            "Bearer " + serverResponse.token
+          );
+          setUser(serverResponse.body);
+          setRedirect(true);
+        } else {
+          setErr("Email is already registered");
+        }
+      } else {
+        setErr(serverResponse.emessage);
       }
-      // }
     } catch (e) {
-      console.log(e);
+      setErr(e);
     }
   };
+
+  if (redirect) {
+    return <Redirect to="/todolist" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs" className={classes.main_wrapper}>
@@ -91,6 +110,11 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+        {err ? (
+          <Alert severity="error" className={classes.error}>
+            {err}
+          </Alert>
+        ) : null}
         <form className={classes.form} noValidate onSubmit={handleSignup}>
           <TextField
             margin="normal"
@@ -134,8 +158,10 @@ export default function SignUp() {
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link to="/signin">
+                <ULink href="#" variant="body2">
+                  {"Already have an account? Sign In"}
+                </ULink>
               </Link>
             </Grid>
           </Grid>

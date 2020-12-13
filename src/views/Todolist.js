@@ -5,7 +5,6 @@ import Main from "../components/Main";
 const Todolist = () => {
   return (
     <div>
-      <Navigation />
       <Main />
     </div>
   );
