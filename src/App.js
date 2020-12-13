@@ -40,8 +40,11 @@ const App = () => {
         <ThemeProvider theme={theme}>
           <Navigation />
           <Switch>
-            <Route exact path="/">
+            {/* <Route exact path="/">
               <Redirect to="/todolist" />;
+            </Route> */}
+            <Route exact path="/">
+              <Todolist />
             </Route>
             <Route exact path="/todolist">
               <Todolist />
