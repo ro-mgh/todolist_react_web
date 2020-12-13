@@ -43,7 +43,7 @@ const App = () => {
             <Route exact path="/">
               <Redirect to="/todolist" />;
             </Route>
-            <Route exact path="/todolist">
+            <Route path="/todolist">
               <Todolist />
             </Route>
             <ProtectedSignin path="/signin" />
