@@ -43,11 +43,11 @@ const App = () => {
             <Route exact path="/">
               <Redirect to="/todolist" />;
             </Route>
-            <Route path="/todolist">
+            <Route exact path="/todolist">
               <Todolist />
             </Route>
-            <ProtectedSignin path="/signin" />
-            <ProtectedSignup path="/signup" />
+            <ProtectedSignin exact path="/signin" />
+            <ProtectedSignup exact path="/signup" />
           </Switch>
           <Footer />
         </ThemeProvider>
