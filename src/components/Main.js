@@ -36,6 +36,7 @@ const useToDoListStyles = makeStyles((theme) => ({
     "justify-content": "center",
   },
   counter_icon: {
+    "margin-right": "5px",
     width: "70px",
     height: "70px",
     color: theme.fontColor,
@@ -206,7 +207,7 @@ const Main = (props) => {
 
   return (
     <Grid container spacing={3} justify="center" className={classes.container}>
-      <Grid item xs={7}>
+      <Grid item sm={7} xs={8}>
         <Paper className={classes.paper_adding}>
           <Typography className={classes.headers}>Add new task</Typography>
           {err ? (
@@ -221,13 +222,13 @@ const Main = (props) => {
           />
         </Paper>
       </Grid>
-      <Grid item xs={4} className={classes.grid_counter}>
+      <Grid item sm={4} className={classes.grid_counter}>
         <CheckCircleRoundedIcon className={classes.counter_icon} />
         <Typography className={classes.headers}>
           {tasks.filter((t) => t.status === "complete").length}
         </Typography>
       </Grid>
-      <Grid item xs={7}>
+      <Grid item sm={7} xs={11}>
         <Paper className={classes.paper_tasks}>
           <Typography className={classes.headers}>Current tasks</Typography>
           <List>
@@ -245,7 +246,7 @@ const Main = (props) => {
           </List>
         </Paper>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item sm={4} xs={11}>
         <Paper className={classes.paper_tasks}>
           <Typography className={classes.headers}>Completed tasks</Typography>
           <List>
