@@ -1,14 +1,6 @@
-# todolist_react_web
-
-Web interface for todolist project
-
-#####
-
-https://master.d2jj3v0ts96mxm.amplifyapp.com
-
 # A React Todo Application
 Hi there! This is a wonderful TODOlist written on React/Node. 
-Check it: [TODO React](https://github.com/ro-mgh/instagram_react_app)
+Check it: [TODO React](https://master.d2jj3v0ts96mxm.amplifyapp.com)
 
 ## You can
 - Signup/signin or use board without credentials
@@ -33,6 +25,8 @@ Check it: [TODO React](https://github.com/ro-mgh/instagram_react_app)
 ## Development
 #### Server: heroku 
 #### Client: [](https://amplify-workshop.go-aws.com/images/favicon.png) AWS Amplify [App link](https://master.d2jj3v0ts96mxm.amplifyapp.com)
+
+#####
 
 Please signIn to save changes.
 And good luck in completion of tasks! =)
