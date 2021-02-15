@@ -17,6 +17,8 @@ Check it: [TODO React](https://master.d2jj3v0ts96mxm.amplifyapp.com)
 - CRUD
 - ![mongo](https://www.mongodb.com/assets/images/global/favicon.ico) MongoDB
 - ![mongo](https://jwt.io/img/favicon/favicon-32x32.png) JWT auth tokens
+#### [Link to git repo](https://github.com/ro-mgh/todolist_react_server)
+
 
 ![auth](https://insta-project.s3.ap-northeast-2.amazonaws.com/Screenshot+2021-02-16+at+00.09.46.png)
 
