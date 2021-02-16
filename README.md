@@ -24,7 +24,7 @@ Check it: [TODO React](https://master.d2jj3v0ts96mxm.amplifyapp.com)
 
 ![main](https://insta-project.s3.ap-northeast-2.amazonaws.com/Screenshot+2021-02-16+at+00.12.34.png)
 
-## Development
+## Deployment
 #### Server: heroku 
 #### Client: [](https://amplify-workshop.go-aws.com/images/favicon.png) AWS Amplify [App link](https://master.d2jj3v0ts96mxm.amplifyapp.com)
 
