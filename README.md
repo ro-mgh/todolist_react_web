@@ -6,8 +6,8 @@ Check it: [TODO React](https://master.d2jj3v0ts96mxm.amplifyapp.com)
 - Signup/signin or use board without credentials
 - Add new task, complete/uncomplete, delete task from your board
 
-## Teck stack
-#### Front
+## Tech stack
+#### Frontend
 - ![React](https://ru.reactjs.org/favicon-32x32.png?v=f4d46f030265b4c48a05c999b8d93791) React
 - Material UI
 #### Server
